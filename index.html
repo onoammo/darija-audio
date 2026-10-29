@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon Premier Mot en Darija — Écoute les mots</title>
+<meta name="description" content="Écoute les 30 mots en darija. Livre audio pour enfants.">
+<meta property="og:title" content="Mon Premier Mot en Darija">
+<meta property="og:description" content="Écoute les 30 mots en darija.">
+<meta property="og:image" content="https://raw.githubusercontent.com/onoammo/darija-audio/main/cover.jpg">
+<style>
+  :root {
+    --terre: #C75B39;
+    --creme: #FDF8F3;
+    --ivoire: #F5EDE4;
+    --sable: #E8D5C4;
+    --texte: #2B2B2B;
+    --texte-doux: #6B5D4F;
+    --arabe: #2B4162;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 70px; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: var(--creme);
+    color: var(--texte);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--terre); text-decoration: none; }
+
+  /* Header */
+  .site-header {
+    background: var(--terre);
+    color: #FFF;
+    padding: 24px 16px;
+    text-align: center;
+    border-bottom: 4px solid var(--sable);
+  }
+  .site-header h1 {
+    font-size: 1.6em;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .site-header p {
+    font-size: 0.9em;
+    opacity: 0.9;
+    font-style: italic;
+  }
+  .site-header .author {
+    margin-top: 8px;
+    font-size: 0.85em;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* Nav sticky */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(253, 248, 243, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--sable);
+    padding: 10px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    font-size: 0.9em;
+  }
+  .sticky-nav a {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--terre);
+    color: #FFF;
+    font-weight: 600;
+  }
+  .sticky-nav a:hover { opacity: 0.9; }
+  .sticky-nav .counter {
+    color: var(--texte-doux);
+    font-size: 0.85em;
+    font-style: italic;
+  }
+
+  /* Word section */
+  .word {
+    padding: 32px 16px;
+    max-width: 680px;
+    margin: 0 auto;
+    border-bottom: 1px dashed var(--sable);
+    scroll-margin-top: 70px;
+  }
+  .word:last-of-type { border-bottom: none; }
+
+  .theme-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 999px;
+    color: #FFF;
+    font-size: 0.8em;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .word-title {
+    font-size: 2.2em;
+    font-weight: 800;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  /* Audio player - big touch target */
+  .audio-wrap {
+    background: var(--ivoire);
+    border-radius: 16px;
+    padding: 16px;
+    margin: 16px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  audio {
+    width: 100%;
+    height: 48px;
+  }
+
+  /* Arabic - main visual */
+  .arabic {
+    font-family: 'Noto Naskh Arabic', 'Traditional Arabic', 'Amiri', serif;
+    font-size: 3em;
+    font-weight: 600;
+    color: var(--arabe);
+    text-align: center;
+    direction: rtl;
+    margin: 20px 0;
+    line-height: 1.4;
+  }
+
+  .pronunciation {
+    display: inline-block;
+    font-size: 1.1em;
+    font-style: italic;
+    color: var(--texte-doux);
+    background: var(--ivoire);
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin: 8px 0 16px;
+  }
+
+  .french {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 12px 0;
+    color: var(--texte);
+  }
+
+  .phrase {
+    background: #FDF6EC;
+    border-left: 4px solid var(--terre);
+    padding: 14px 18px;
+    margin: 20px 0 8px;
+    border-radius: 8px;
+  }
+  .phrase .darija {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .phrase .french-phrase {
+    font-size: 1em;
+    color: var(--texte-doux);
+    font-style: italic;
+  }
+
+  /* Nav prev/next */
+  .word-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--sable);
+    gap: 12px;
+  }
+  .word-nav a {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--terre);
+    color: #FFF;
+    font-weight: 600;
+    font-size: 0.9em;
+    text-align: center;
+    flex: 1;
+    max-width: 180px;
+  }
+  .word-nav .disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  /* Footer */
+  .site-footer {
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--texte-doux);
+    font-size: 0.85em;
+    border-top: 1px solid var(--sable);
+  }
+  .site-footer strong { color: var(--terre); }
+
+  /* Back to top */
+  .back-top {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: var(--terre);
+    color: #FFF;
+    border-radius: 999px;
+    font-size: 0.85em;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Mon Premier Mot en Darija</h1>
+  <p>Écoute les 30 mots du livre</p>
+  <p class="author">Yassmina Zarrouk</p>
+</header>
+
+<nav class="sticky-nav">
+  <a href="#asalamo-aalikom">⬆ Début</a>
+  <span class="counter">30 mots · 🇲🇦 darija</span>
+</nav>
+
+<!-- ═══════════ 1. ASALAMO AALIKOM ═══════════ -->
+<section class="word" id="asalamo-aalikom">
+  <span class="theme-badge" style="background:#2E7D6B;">👋 Salutations</span>
+  <h2 class="word-title" style="color:#2E7D6B;">Asalamo aalikom</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none">
+      <source src="asalamo-aalikom.wav" type="audio/wav">
+    </audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">السلام عليكم</div>
+  <div class="pronunciation">Assa-la-mo aa-li-kom</div>
+  <div class="french">bonjour</div>
+  <div class="phrase" style="border-left-color:#2E7D6B;">
+    <div class="darija">« Asalamo aalikom, labas ? »</div>
+    <div class="french-phrase">Salut, ça va ?</div>
+  </div>
+  <div class="word-nav">
+    <a class="disabled">← Précédent</a>
+    <a href="#bslama">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 2. BSLAMA ═══════════ -->
+<section class="word" id="bslama">
+  <span class="theme-badge" style="background:#2E7D6B;">👋 Salutations</span>
+  <h2 class="word-title" style="color:#2E7D6B;">Bslama</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="bslama.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">بسلامة</div>
+  <div class="pronunciation">Bsla-ma</div>
+  <div class="french">au revoir</div>
+  <div class="phrase" style="border-left-color:#2E7D6B;">
+    <div class="darija">« Bslama, nchoufek ghedda ! »</div>
+    <div class="french-phrase">Au revoir, à demain !</div>
+  </div>
+  <div class="word-nav">
+    <a href="#asalamo-aalikom">← Précédent</a>
+    <a href="#labas">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 3. LABAS ═══════════ -->
+<section class="word" id="labas">
+  <span class="theme-badge" style="background:#2E7D6B;">👋 Salutations</span>
+  <h2 class="word-title" style="color:#2E7D6B;">Labas</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="labas.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">لباس</div>
+  <div class="pronunciation">La-bas</div>
+  <div class="french">ça va ?</div>
+  <div class="phrase" style="border-left-color:#2E7D6B;">
+    <div class="darija">« Labas 3lik ? »</div>
+    <div class="french-phrase">Ça va ?</div>
+  </div>
+  <div class="word-nav">
+    <a href="#bslama">← Précédent</a>
+    <a href="#mama">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 4. MAMA ═══════════ -->
+<section class="word" id="mama">
+  <span class="theme-badge" style="background:#B4462F;">❤️ Famille</span>
+  <h2 class="word-title" style="color:#B4462F;">Mama</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="mama.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">ماما</div>
+  <div class="pronunciation">Ma-ma</div>
+  <div class="french">maman</div>
+  <div class="phrase" style="border-left-color:#B4462F;">
+    <div class="darija">« Mama, 3andi jou3. »</div>
+    <div class="french-phrase">Maman, j'ai faim.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#labas">← Précédent</a>
+    <a href="#baba">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 5. BABA ═══════════ -->
+<section class="word" id="baba">
+  <span class="theme-badge" style="background:#B4462F;">❤️ Famille</span>
+  <h2 class="word-title" style="color:#B4462F;">Baba</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="baba.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">بابا</div>
+  <div class="pronunciation">Ba-ba</div>
+  <div class="french">papa</div>
+  <div class="phrase" style="border-left-color:#B4462F;">
+    <div class="darija">« Baba, a3tini ktab. »</div>
+    <div class="french-phrase">Papa, donne-moi un livre.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#mama">← Précédent</a>
+    <a href="#jdda">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 6. JDDA ═══════════ -->
+<section class="word" id="jdda">
+  <span class="theme-badge" style="background:#B4462F;">❤️ Famille</span>
+  <h2 class="word-title" style="color:#B4462F;">Jdda</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="jdda.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">جدة</div>
+  <div class="pronunciation">Jed-da</div>
+  <div class="french">mamie</div>
+  <div class="phrase" style="border-left-color:#B4462F;">
+    <div class="darija">« Jdda, 3andek atay ? »</div>
+    <div class="french-phrase">Mamie, tu as du thé ?</div>
+  </div>
+  <div class="word-nav">
+    <a href="#baba">← Précédent</a>
+    <a href="#jaddi">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 7. JADDI ═══════════ -->
+<section class="word" id="jaddi">
+  <span class="theme-badge" style="background:#B4462F;">❤️ Famille</span>
+  <h2 class="word-title" style="color:#B4462F;">Jaddi</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="jaddi.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">جدي</div>
+  <div class="pronunciation">Jed-di</div>
+  <div class="french">papi</div>
+  <div class="phrase" style="border-left-color:#B4462F;">
+    <div class="darija">« Jaddi, a3tini flous. »</div>
+    <div class="french-phrase">Papi, donne-moi de l'argent.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#jdda">← Précédent</a>
+    <a href="#khobz">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 8. KHOBZ ═══════════ -->
+<section class="word" id="khobz">
+  <span class="theme-badge" style="background:#D9772B;">🍱 Nourriture</span>
+  <h2 class="word-title" style="color:#D9772B;">Khobz</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="khobz.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">خبز</div>
+  <div class="pronunciation">Khobz</div>
+  <div class="french">pain</div>
+  <div class="phrase" style="border-left-color:#D9772B;">
+    <div class="darija">« Bghit khobz, 3afak. »</div>
+    <div class="french-phrase">Je veux du pain, s'il te plaît.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#jaddi">← Précédent</a>
+    <a href="#atay">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 9. ATAY ═══════════ -->
+<section class="word" id="atay">
+  <span class="theme-badge" style="background:#D9772B;">🍱 Nourriture</span>
+  <h2 class="word-title" style="color:#D9772B;">Atay</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="atay.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">أتاي</div>
+  <div class="pronunciation">A-tay</div>
+  <div class="french">thé</div>
+  <div class="phrase" style="border-left-color:#D9772B;">
+    <div class="darija">« Atay bna3na3, 3afak. »</div>
+    <div class="french-phrase">Thé à la menthe, s'il te plaît.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#khobz">← Précédent</a>
+    <a href="#djaj">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 10. DJAJ ═══════════ -->
+<section class="word" id="djaj">
+  <span class="theme-badge" style="background:#D9772B;">🍱 Nourriture</span>
+  <h2 class="word-title" style="color:#D9772B;">Djaj</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="djaj.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">دجاج</div>
+  <div class="pronunciation">Djaj</div>
+  <div class="french">poulet</div>
+  <div class="phrase" style="border-left-color:#D9772B;">
+    <div class="darija">« Djaj m7ammar lyoum. »</div>
+    <div class="french-phrase">Poulet rôti aujourd'hui.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#atay">← Précédent</a>
+    <a href="#maticha">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 11. MATICHA ═══════════ -->
+<section class="word" id="maticha">
+  <span class="theme-badge" style="background:#D9772B;">🍱 Nourriture</span>
+  <h2 class="word-title" style="color:#D9772B;">Maticha</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="maticha.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">مطيشة</div>
+  <div class="pronunciation">Ma-ti-cha</div>
+  <div class="french">tomate</div>
+  <div class="phrase" style="border-left-color:#D9772B;">
+    <div class="darija">« Maticha 7amra. »</div>
+    <div class="french-phrase">Tomate rouge.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#djaj">← Précédent</a>
+    <a href="#mchich">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 12. MCHICH ═══════════ -->
+<section class="word" id="mchich">
+  <span class="theme-badge" style="background:#D9772B;">🍱 Nourriture</span>
+  <h2 class="word-title" style="color:#D9772B;">Mchich</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="mchich.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">مشمش</div>
+  <div class="pronunciation">Mchich</div>
+  <div class="french">abricot sec</div>
+  <div class="phrase" style="border-left-color:#D9772B;">
+    <div class="darija">« Mchich 7lou. »</div>
+    <div class="french-phrase">Mchich sucré.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#maticha">← Précédent</a>
+    <a href="#kebch">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 13. KEBCH ═══════════ -->
+<section class="word" id="kebch">
+  <span class="theme-badge" style="background:#D9772B;">🍱 Nourriture</span>
+  <h2 class="word-title" style="color:#D9772B;">Kebch</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="kebch.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">كبش</div>
+  <div class="pronunciation">Kebch</div>
+  <div class="french">mouton</div>
+  <div class="phrase" style="border-left-color:#D9772B;">
+    <div class="darija">« Kebch l-3id. »</div>
+    <div class="french-phrase">Mouton de l'Aïd.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#mchich">← Précédent</a>
+    <a href="#hout">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 14. HOUT ═══════════ -->
+<section class="word" id="hout">
+  <span class="theme-badge" style="background:#1F3A5F;">🐱 Animaux</span>
+  <h2 class="word-title" style="color:#1F3A5F;">Hout</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="hout.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">حوت</div>
+  <div class="pronunciation">Hout</div>
+  <div class="french">poisson</div>
+  <div class="phrase" style="border-left-color:#1F3A5F;">
+    <div class="darija">« Hout f l-b7ar. »</div>
+    <div class="french-phrase">Poisson dans la mer.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#kebch">← Précédent</a>
+    <a href="#hmama">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 15. HMAMA ═══════════ -->
+<section class="word" id="hmama">
+  <span class="theme-badge" style="background:#1F3A5F;">🐱 Animaux</span>
+  <h2 class="word-title" style="color:#1F3A5F;">Hmama</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="hmama.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">حمامة</div>
+  <div class="pronunciation">Hma-ma</div>
+  <div class="french">colombe</div>
+  <div class="phrase" style="border-left-color:#1F3A5F;">
+    <div class="darija">« Hmama tayra. »</div>
+    <div class="french-phrase">Colombe qui vole.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#hout">← Précédent</a>
+    <a href="#wahed">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 16. WAHED ═══════════ -->
+<section class="word" id="wahed">
+  <span class="theme-badge" style="background:#6B4F9E;">🔢 Chiffres</span>
+  <h2 class="word-title" style="color:#6B4F9E;">Wahed</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="wahed.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">واحد</div>
+  <div class="pronunciation">Oua-hed</div>
+  <div class="french">un</div>
+  <div class="phrase" style="border-left-color:#6B4F9E;">
+    <div class="darija">« Wahed, jouj, tlata ! »</div>
+    <div class="french-phrase">Un, deux, trois !</div>
+  </div>
+  <div class="word-nav">
+    <a href="#hmama">← Précédent</a>
+    <a href="#jouj">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 17. JOUJ ═══════════ -->
+<section class="word" id="jouj">
+  <span class="theme-badge" style="background:#6B4F9E;">🔢 Chiffres</span>
+  <h2 class="word-title" style="color:#6B4F9E;">Jouj</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="jouj.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">جوج</div>
+  <div class="pronunciation">Jouj</div>
+  <div class="french">deux</div>
+  <div class="phrase" style="border-left-color:#6B4F9E;">
+    <div class="darija">« 3andi jouj ktab. »</div>
+    <div class="french-phrase">J'ai deux livres.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#wahed">← Précédent</a>
+    <a href="#tlata">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 18. TLATA ═══════════ -->
+<section class="word" id="tlata">
+  <span class="theme-badge" style="background:#6B4F9E;">🔢 Chiffres</span>
+  <h2 class="word-title" style="color:#6B4F9E;">Tlata</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="tlata.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">تلاتة</div>
+  <div class="pronunciation">Tla-ta</div>
+  <div class="french">trois</div>
+  <div class="phrase" style="border-left-color:#6B4F9E;">
+    <div class="darija">« Tlata wlad. »</div>
+    <div class="french-phrase">Trois enfants.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#jouj">← Précédent</a>
+    <a href="#azraq">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 19. AZRAQ ═══════════ -->
+<section class="word" id="azraq">
+  <span class="theme-badge" style="background:#C63B3B;">🎨 Couleurs</span>
+  <h2 class="word-title" style="color:#C63B3B;">Azraq</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="azraq.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">أزرق</div>
+  <div class="pronunciation">Az-raq</div>
+  <div class="french">bleu</div>
+  <div class="phrase" style="border-left-color:#C63B3B;">
+    <div class="darija">« Sma azraq. »</div>
+    <div class="french-phrase">Ciel bleu.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#tlata">← Précédent</a>
+    <a href="#akhdar">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 20. AKHDAR ═══════════ -->
+<section class="word" id="akhdar">
+  <span class="theme-badge" style="background:#C63B3B;">🎨 Couleurs</span>
+  <h2 class="word-title" style="color:#C63B3B;">Akhdar</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="akhdar.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">أخضر</div>
+  <div class="pronunciation">Akh-dar</div>
+  <div class="french">vert</div>
+  <div class="phrase" style="border-left-color:#C63B3B;">
+    <div class="darija">« L-3chb akhdar. »</div>
+    <div class="french-phrase">L'herbe verte.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#azraq">← Précédent</a>
+    <a href="#ahmar">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 21. AHMAR ═══════════ -->
+<section class="word" id="ahmar">
+  <span class="theme-badge" style="background:#C63B3B;">🎨 Couleurs</span>
+  <h2 class="word-title" style="color:#C63B3B;">Ahmar</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="ahmar.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">أحمر</div>
+  <div class="pronunciation">Ah-mar</div>
+  <div class="french">rouge</div>
+  <div class="phrase" style="border-left-color:#C63B3B;">
+    <div class="darija">« Wrd ahmar. »</div>
+    <div class="french-phrase">Rose rouge.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#akhdar">← Précédent</a>
+    <a href="#ktab">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 22. KTAB ═══════════ -->
+<section class="word" id="ktab">
+  <span class="theme-badge" style="background:#8B2E2E;">📚 École</span>
+  <h2 class="word-title" style="color:#8B2E2E;">Ktab</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="ktab.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">كتاب</div>
+  <div class="pronunciation">Ktab</div>
+  <div class="french">livre</div>
+  <div class="phrase" style="border-left-color:#8B2E2E;">
+    <div class="darija">« Ktab 3la tawla. »</div>
+    <div class="french-phrase">Livre sur la table.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#ahmar">← Précédent</a>
+    <a href="#qalam">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 23. QALAM ═══════════ -->
+<section class="word" id="qalam">
+  <span class="theme-badge" style="background:#8B2E2E;">📚 École</span>
+  <h2 class="word-title" style="color:#8B2E2E;">Qalam</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="qalam.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">قلم</div>
+  <div class="pronunciation">Qa-lam</div>
+  <div class="french">stylo</div>
+  <div class="phrase" style="border-left-color:#8B2E2E;">
+    <div class="darija">« Qalam zre9. »</div>
+    <div class="french-phrase">Stylo bleu.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#ktab">← Précédent</a>
+    <a href="#madrassa">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 24. MADRASSA ═══════════ -->
+<section class="word" id="madrassa">
+  <span class="theme-badge" style="background:#8B2E2E;">📚 École</span>
+  <h2 class="word-title" style="color:#8B2E2E;">Madrassa</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="madrassa.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">مدرسة</div>
+  <div class="pronunciation">Ma-dras-sa</div>
+  <div class="french">école</div>
+  <div class="phrase" style="border-left-color:#8B2E2E;">
+    <div class="darija">« Madrassa kbira. »</div>
+    <div class="french-phrase">Grande école.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#qalam">← Précédent</a>
+    <a href="#dar">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 25. DAR ═══════════ -->
+<section class="word" id="dar">
+  <span class="theme-badge" style="background:#7A5A3C;">🏠 Maison</span>
+  <h2 class="word-title" style="color:#7A5A3C;">Dar</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="dar.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">دار</div>
+  <div class="pronunciation">Dar</div>
+  <div class="french">maison</div>
+  <div class="phrase" style="border-left-color:#7A5A3C;">
+    <div class="darija">« Dar dyalna. »</div>
+    <div class="french-phrase">Notre maison.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#madrassa">← Précédent</a>
+    <a href="#bab">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 26. BAB ═══════════ -->
+<section class="word" id="bab">
+  <span class="theme-badge" style="background:#7A5A3C;">🏠 Maison</span>
+  <h2 class="word-title" style="color:#7A5A3C;">Bab</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="bab.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">باب</div>
+  <div class="pronunciation">Bab</div>
+  <div class="french">porte</div>
+  <div class="phrase" style="border-left-color:#7A5A3C;">
+    <div class="darija">« Bab m7loul. »</div>
+    <div class="french-phrase">Porte ouverte.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#dar">← Précédent</a>
+    <a href="#frach">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 27. FRACH ═══════════ -->
+<section class="word" id="frach">
+  <span class="theme-badge" style="background:#7A5A3C;">🏠 Maison</span>
+  <h2 class="word-title" style="color:#7A5A3C;">Frach</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="frach.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">فراش</div>
+  <div class="pronunciation">Frach</div>
+  <div class="french">lit</div>
+  <div class="phrase" style="border-left-color:#7A5A3C;">
+    <div class="darija">« Frach n3es. »</div>
+    <div class="french-phrase">Lit pour dormir.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#bab">← Précédent</a>
+    <a href="#souq">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 28. SOUQ ═══════════ -->
+<section class="word" id="souq">
+  <span class="theme-badge" style="background:#D4A017;">🧺 Marché</span>
+  <h2 class="word-title" style="color:#D4A017;">Souq</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="souq.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">سوق</div>
+  <div class="pronunciation">Souq</div>
+  <div class="french">marché</div>
+  <div class="phrase" style="border-left-color:#D4A017;">
+    <div class="darija">« Souq 3amr. »</div>
+    <div class="french-phrase">Marché plein.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#frach">← Précédent</a>
+    <a href="#flous">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 29. FLOUS ═══════════ -->
+<section class="word" id="flous">
+  <span class="theme-badge" style="background:#D4A017;">🧺 Marché</span>
+  <h2 class="word-title" style="color:#D4A017;">Flous</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="flous.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">فلوس</div>
+  <div class="pronunciation">Flous</div>
+  <div class="french">argent</div>
+  <div class="phrase" style="border-left-color:#D4A017;">
+    <div class="darija">« Flous f jibi. »</div>
+    <div class="french-phrase">Argent dans ma poche.</div>
+  </div>
+  <div class="word-nav">
+    <a href="#souq">← Précédent</a>
+    <a href="#id-said">Suivant →</a>
+  </div>
+</section>
+
+<!-- ═══════════ 30. ID SAID ═══════════ -->
+<section class="word" id="id-said">
+  <span class="theme-badge" style="background:#D4A017;">🎉 Fêtes</span>
+  <h2 class="word-title" style="color:#D4A017;">Id Said</h2>
+  <div class="audio-wrap">
+    <audio controls preload="none"><source src="id-said.wav" type="audio/wav"></audio>
+  </div>
+  <div class="arabic" dir="rtl" lang="ar">عيد سعيد</div>
+  <div class="pronunciation">Id Sa-id</div>
+  <div class="french">Aïd</div>
+  <div class="phrase" style="border-left-color:#D4A017;">
+    <div class="darija">« Id Said mbruk ! »</div>
+    <div class="french-phrase">Joyeux Aïd !</div>
+  </div>
+  <div class="word-nav">
+    <a href="#flous">← Précédent</a>
+    <a class="disabled">Suivant →</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p><strong>Mon Premier Mot en Darija</strong><br>par Yassmina Zarrouk</p>
+  <p style="margin-top:12px;font-size:0.85em;">30 mots · 10 thèmes · pour les enfants de 3 à 7 ans</p>
+  <a class="back-top" href="#asalamo-aalikom">⬆ Retour en haut</a>
+</footer>
+
+<script>
+  // Auto-scroll vers l'ancre si présente dans l'URL
+  window.addEventListener('load', function() {
+    if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
